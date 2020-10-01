@@ -46,8 +46,13 @@ public class TicTacToeGame {
 	public static void move(char[] board, char playerLetter){
 		System.out.println("Enter the index you want to move to: ");
 		int index = sc.nextInt();
-		if(board[index] == ' ')
+		while (index < 1 || index > 9) {
+			System.out.println("Wrong Input. Try Again.");
+			index = sc.nextInt();
+		}
+		if(board[index] == ' ') {
 			board[index] = playerLetter;
+		}
 		else {
 			System.out.println("Index not available. Choose another");
 			move(board, playerLetter);
@@ -60,7 +65,7 @@ public class TicTacToeGame {
 		char[] board = createBoard();
 		char playerLetter = takeInput();
 		displayBoard(board);
-		move(board, playerLetter)
+		move(board, playerLetter);
 		
 		sc.close();
 	}
