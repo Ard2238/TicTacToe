@@ -67,14 +67,25 @@ public class TicTacToeGame {
 		return;
 	}
 	
-	/* UC8 -- UC9 Computer Movement
-	 * 8. check if computer can win
-	 * 9. check if player can win
+	/* UC8 -- UC10 Computer Movement
+	 * 8.  check if computer can win
+	 * 9.  check if player can win
+	 * 10. check if diagonal cells are available
 	 */
 	public static void moveComputer(char[] board) {
-		if(checkIsWinning(board, computerLetter) == 0)
-			if(checkIsWinning(board, playerLetter) != 0)
+		if(checkIsWinning(board, computerLetter) == 0)							//UC8
+			if(checkIsWinning(board, playerLetter) != 0)						//UC9
 				board[checkIsWinning(board, playerLetter)] = computerLetter;
+		if(board[1] == ' ')														//UC10
+			board[1] = computerLetter;
+		else if(board[3] == ' ')
+			board[3] = computerLetter;
+		else if(board[7] == ' ')
+			board[7] = computerLetter;
+		else if(board[9] == ' ')
+			board[9] = computerLetter;
+		else
+		
 		
 		if(total_moves < 10)
 			movePlayer(board);
