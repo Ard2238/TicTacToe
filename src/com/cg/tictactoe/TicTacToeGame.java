@@ -37,11 +37,22 @@ public class TicTacToeGame {
 	
 	/* UC3 -- Display the Board */
 	public static void displayBoard(char[] board) {
-		System.out.println("\n\t " + board[1] + " | " + board[2] + " | " + board[3] + "\n\t-----------" );
-		System.out.println("\t " + board[4] + " | " + board[5] + " | " + board[6] + "\n\t-----------" );
-		System.out.println("\t " + board[7] + " | " + board[8] + " | " + board[9] + "\n\t"
-				+ ""
-				+ "" );
+		System.out.println("\n\t " + board[1] + " | " + board[2] + " | " + board[3] + "\n\t-----------");
+		System.out.println("\t " + board[4] + " | " + board[5] + " | " + board[6] + "\n\t-----------");
+		System.out.println("\t " + board[7] + " | " + board[8] + " | " + board[9] + "\n\t");
+	}
+	
+	/* UC4 -- Player Movement */
+	public static void move(char[] board, char playerLetter){
+		System.out.println("Enter the index you want to move to: ");
+		int index = sc.nextInt();
+		if(board[index] == ' ')
+			board[index] = playerLetter;
+		else {
+			System.out.println("Index not available. Choose another");
+			move(board, playerLetter);
+		}		
+		return;
 	}
 
 	public static void main(String[] args) {
@@ -49,6 +60,7 @@ public class TicTacToeGame {
 		char[] board = createBoard();
 		char playerLetter = takeInput();
 		displayBoard(board);
+		move(board, playerLetter)
 		
 		sc.close();
 	}
