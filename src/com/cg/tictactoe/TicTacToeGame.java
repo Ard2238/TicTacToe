@@ -2,7 +2,9 @@ package com.cg.tictactoe;
 
 import java.util.Scanner;
 
-public class TicTacToeGame {	
+public class TicTacToeGame {
+	static final int HEAD = 1, TAIL =0;
+	
 	static Scanner sc = new Scanner(System.in);
 	static char playerLetter, computerLetter;
 	
@@ -17,7 +19,7 @@ public class TicTacToeGame {
 	
 	/* UC2 -- Taking Input */ 
 	public static char takeInput() {
-		System.out.println("Enter the input ('X' / 'O'): ");
+		System.out.println("Enter the letter you wish to take: ('X' / 'O'): ");
 		char input = Character.toUpperCase(sc.next().charAt(0));		
 		if(input == 'X' || input == 'O') {
 			setLetter(input);
@@ -43,21 +45,33 @@ public class TicTacToeGame {
 	}
 	
 	/* UC4 -- Player Movement */
-	public static void move(char[] board, char playerLetter){
+	/*UC5 -- Player places letter*/
+	public static void movePlayer(char[] board, char playerLetter){
 		System.out.println("Enter the index you want to move to: ");
 		int index = sc.nextInt();
 		while (index < 1 || index > 9) {
 			System.out.println("Wrong Input. Try Again.");
 			index = sc.nextInt();
 		}
-		if(board[index] == ' ') {
+		if(board[index] == ' '){
 			board[index] = playerLetter;
+			displayBoard(board);
 		}
 		else {
 			System.out.println("Index not available. Choose another");
-			move(board, playerLetter);
+			movePlayer(board, playerLetter);
 		}		
 		return;
+	}
+	
+	/* UC6 -- Randomly decide who plays first */
+	public static void firstMove(char[] board, char playerLetter) {
+		int toss = (int) (Math.random()*2 % 2);
+		System.out.println(toss);
+		if(toss == HEAD) {
+			movePlayer(board, playerLetter);
+		}
+			
 	}
 
 	public static void main(String[] args) {
@@ -65,7 +79,8 @@ public class TicTacToeGame {
 		char[] board = createBoard();
 		char playerLetter = takeInput();
 		displayBoard(board);
-		move(board, playerLetter);
+		//movePlayer(board, playerLetter);
+		firstMove(board, playerLetter);
 		
 		sc.close();
 	}
