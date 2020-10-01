@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class TicTacToeGame {
 	static final int HEAD = 1, TAIL = 0;
-
+	static int total_moves = 1;
 	static Scanner sc = new Scanner(System.in);
 	static char playerLetter, computerLetter;
 	static String lastPlayed, Winner; 
@@ -46,7 +46,7 @@ public class TicTacToeGame {
 
 	/* UC4 -- Player Movement */
 	/* UC5 -- Player places letter */
-	public static void movePlayer(char[] board, char playerLetter) {
+	public static void movePlayer(char[] board) {
 		System.out.println("Enter the index you want to move to: ");
 		int index = sc.nextInt();
 		while (index < 1 || index > 9) {
@@ -58,37 +58,53 @@ public class TicTacToeGame {
 			displayBoard(board);
 		} else {
 			System.out.println("Index not available. Choose another");
-			movePlayer(board, playerLetter);
+			movePlayer(board);
 		}
+		
+		if(total_moves <10)
+			moveComputer(board);
+		total_moves++;
 		return;
 	}
 	
-	/* UC8 -- Computer Movement
-	 * 1. checking if any move can win the game
+	/* UC8 -- UC9 Computer Movement
+	 * 8. check if computer can win
+	 * 9. check if player can win
 	 */
-	public static void moveComputer(char[] board, char computerLetter) {
-		int index = 1;
+	public static void moveComputer(char[] board) {
+		if(checkIsWinning(board, computerLetter) == 0)
+			if(checkIsWinning(board, playerLetter) != 0)
+				board[checkIsWinning(board, playerLetter)] = computerLetter;
+		
+		if(total_moves < 10)
+			movePlayer(board);
+		total_moves++;				
+	}
+	
+	private static int checkIsWinning(char[] board, char letter) {
+		int index = 0;
 		while(index > 0 && index < 10) {
+			index++;
 			if(board[index] == ' ') {
-				board[index] = computerLetter;
-				if(!outcome(board)) {
+				board[index] = letter;
+				if(outcome(board))
+					return index;
+				else
 					board[index] = ' ';
-					index++;
-				}
 			}
 		}
-		
+		return 0;
 	}
 
 	/* UC6 -- Randomly decide who plays first */
-	public static void firstMove(char[] board, char playerLetter, char computerLetter) {
+	public static void firstMove(char[] board) {
 		int toss = (int) (Math.random() * 2 % 2);
 		System.out.println(toss);
 		if (toss == HEAD) {
-			movePlayer(board, playerLetter);
+			movePlayer(board);
 			//lastPlayed = "Player";			
 		}else {
-			moveComputer(board, computerLetter);
+			moveComputer(board);
 			//lastPlayed = "Computer";
 		}
 		outcome(board);
@@ -101,9 +117,9 @@ public class TicTacToeGame {
 			return true;
 		else if (areMovesLeft(board)) {
 			if(lastPlayed.equals("Computer"))
-				movePlayer(board, playerLetter);
+				movePlayer(board);
 			else
-				moveComputer(board, computerLetter);
+				moveComputer(board);
 			return false;
 		}else {
 			System.out.println("Game Tied.");
@@ -145,10 +161,10 @@ public class TicTacToeGame {
 	public static void main(String[] args) {
 		System.out.println("Welcome to the TicTacToe Game");
 		char[] board = createBoard();
-		char playerLetter = takeInput();
+		playerLetter = takeInput();
 		displayBoard(board);
 		// movePlayer(board, playerLetter);
-		firstMove(board, playerLetter, computerLetter);
+		firstMove(board);
 
 		sc.close();
 	}
