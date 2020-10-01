@@ -7,6 +7,7 @@ public class TicTacToeGame {
 
 	static Scanner sc = new Scanner(System.in);
 	static char playerLetter, computerLetter;
+	static String lastPlayed, Winner; 
 
 	/* UC1 -- Creating a Board */
 	public static char[] createBoard() {
@@ -61,25 +62,52 @@ public class TicTacToeGame {
 		}
 		return;
 	}
+	
+	/* UC8 -- Computer Movement
+	 * 1. checking if any move can win the game
+	 */
+	public static void moveComputer(char[] board, char computerLetter) {
+		int index = 1;
+		while(index > 0 && index < 10) {
+			if(board[index] == ' ') {
+				board[index] = computerLetter;
+				if(!outcome(board)) {
+					board[index] = ' ';
+					index++;
+				}
+			}
+		}
+		
+	}
 
 	/* UC6 -- Randomly decide who plays first */
-	public static void firstMove(char[] board, char playerLetter) {
+	public static void firstMove(char[] board, char playerLetter, char computerLetter) {
 		int toss = (int) (Math.random() * 2 % 2);
 		System.out.println(toss);
 		if (toss == HEAD) {
 			movePlayer(board, playerLetter);
-			outcome(board);
+			//lastPlayed = "Player";			
+		}else {
+			moveComputer(board, computerLetter);
+			//lastPlayed = "Computer";
 		}
-
+		outcome(board);
 	}
 
 	/* UC7 -- Winner, Tie or next turn */
-	public static void outcome(char[] board) {
-		if (checkRows(board)) {
-		} else if (checkColumns(board)) {
-		} else if (checkDiagonals(board)) {
-		} else if (areMovesLeft(board)) {
-		} else {
+	public static boolean outcome(char[] board) {
+		if (checkRows(board) || checkColumns(board) || checkDiagonals(board))
+			//Winner = lastPlayed;
+			return true;
+		else if (areMovesLeft(board)) {
+			if(lastPlayed.equals("Computer"))
+				movePlayer(board, playerLetter);
+			else
+				moveComputer(board, computerLetter);
+			return false;
+		}else {
+			System.out.println("Game Tied.");
+			return false;
 		}
 	}
 
@@ -120,7 +148,7 @@ public class TicTacToeGame {
 		char playerLetter = takeInput();
 		displayBoard(board);
 		// movePlayer(board, playerLetter);
-		firstMove(board, playerLetter);
+		firstMove(board, playerLetter, computerLetter);
 
 		sc.close();
 	}
