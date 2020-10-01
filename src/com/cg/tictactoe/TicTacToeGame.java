@@ -61,16 +61,19 @@ public class TicTacToeGame {
 			movePlayer(board);
 		}
 		
+		lastPlayed = "Player";
+		outcome(board);
 		if(total_moves <10)
 			moveComputer(board);
 		total_moves++;
 		return;
 	}
 	
-	/* UC8 -- UC10 Computer Movement
+	/* UC8 -- UC11 Computer Movement
 	 * 8.  check if computer can win
 	 * 9.  check if player can win
 	 * 10. check if diagonal cells are available
+	 * 11. check if center is available. If not, take any sides.
 	 */
 	public static void moveComputer(char[] board) {
 		if(checkIsWinning(board, computerLetter) == 0)							//UC8
@@ -84,9 +87,20 @@ public class TicTacToeGame {
 			board[7] = computerLetter;
 		else if(board[9] == ' ')
 			board[9] = computerLetter;
-		else
+		else if(board[5] == ' ')
+			board[5] = computerLetter;											//UC11
+		else if(board[2] == ' ')
+			board[2] = computerLetter;
+		else if(board[4] == ' ')
+			board[4] = computerLetter;
+		else if(board[6] == ' ')
+			board[6] = computerLetter;
+		else if(board[8] == ' ')
+			board[8] = computerLetter;
 		
-		
+		displayBoard(board);
+		lastPlayed = "Computer";
+		outcome(board);
 		if(total_moves < 10)
 			movePlayer(board);
 		total_moves++;				
@@ -110,21 +124,20 @@ public class TicTacToeGame {
 	/* UC6 -- Randomly decide who plays first */
 	public static void firstMove(char[] board) {
 		int toss = (int) (Math.random() * 2 % 2);
-		System.out.println(toss);
 		if (toss == HEAD) {
+			System.out.println("Player Wins the Toss.");
 			movePlayer(board);
 			//lastPlayed = "Player";			
 		}else {
 			moveComputer(board);
+			System.out.println("Computer Wins the Toss.");
 			//lastPlayed = "Computer";
 		}
-		outcome(board);
 	}
 
 	/* UC7 -- Winner, Tie or next turn */
 	public static boolean outcome(char[] board) {
 		if (checkRows(board) || checkColumns(board) || checkDiagonals(board))
-			//Winner = lastPlayed;
 			return true;
 		else if (areMovesLeft(board)) {
 			if(lastPlayed.equals("Computer"))
