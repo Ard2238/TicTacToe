@@ -68,16 +68,22 @@ public class TicTacToeGame {
 			movePlayer(board);
 		}		
 		lastPlayed = "Player";
-		if(checkWin(board)) {																	//UC12 -- Player wins
-			System.out.println("Player Won The Game !!");
-			System.exit(0);
+		if(checkWin(board)) {																				//UC12 -- Player wins
+			System.out.println("Player Won The Game !! \nDo You Want to Play Another Game (Y/N) : ");
+			if(Character.toUpperCase(sc.next().charAt(0)) == 'Y')											//UC13 -- Next Game
+				startGame();
+			else
+				System.exit(0);
 		}
 		if(isEmpty(board)) {
 			moveComputer(board);
 		}
 		else {
-			System.out.println("Game Tied.");												   //UC12 -- Board is full
-			System.exit(0);
+			System.out.println("Game Tied. \nDo You Want to Play Another Game (Y/N) : ");												   				//UC12 -- Board is full
+			if(Character.toUpperCase(sc.next().charAt(0)) == 'Y')											//UC13 -- Next Game
+				startGame();
+			else
+				System.exit(0);
 		}
 		return;
 	}
@@ -96,8 +102,11 @@ public class TicTacToeGame {
 		if( checkCompWinPos != 0 ) {
 			board[checkCompWinPos] = computerLetter;
 			displayBoard(board);
-			System.out.println("Computer Won The Game !!");
-			System.exit(0);					
+			System.out.println("Computer Won The Game !! \nDo You Want to Play Another Game (Y/N) : ");
+			if(Character.toUpperCase(sc.next().charAt(0)) == 'Y')							//UC13 -- Next Game
+				startGame();
+			else
+				System.exit(0);			
 		}																					//UC8
 		else if( checkPlayWinPos != 0 )														//UC9
 			board[checkPlayWinPos] = computerLetter;		
@@ -124,8 +133,11 @@ public class TicTacToeGame {
 		displayBoard(board);
 		lastPlayed = "Computer";
 		if(checkWin(board)) {																//UC12 -- Computer Wins
-			System.out.println("Computer Won The Game !!");
-			System.exit(0);
+			System.out.println("Computer Won The Game !! \nDo You Want to Play Another Game (Y/N) : ");
+			if(Character.toUpperCase(sc.next().charAt(0)) == 'Y')							//UC13 -- Next Game
+				startGame();
+			else
+				System.exit(0);
 		}
 		if(isEmpty(board)) {
 			movePlayer(board);
@@ -201,12 +213,15 @@ public class TicTacToeGame {
 		return false;
 	}
 
-	public static void main(String[] args) {
-		System.out.println("Welcome to the TicTacToe Game");
+	private static void startGame() {
 		char[] board = createBoard();
 		playerLetter = takeInput();
 		displayBoard(board);
 		firstMove(board);
+	}
+	public static void main(String[] args) {
+		System.out.println("Welcome to the TicTacToe Game");
+		startGame();
 		sc.close();
 	}
 }
